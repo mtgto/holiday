@@ -6,9 +6,10 @@ import java.util.{Date => JDate, Calendar, GregorianCalendar}
  * A collections of function check whether the specified date is holiday in Japanese.
  *
  * these functions have some rules:
- * 1. Saturday is holiday.
- * 2. National holiday is holiday.
- * 3. If yesterday is holiday and today is Monday, then today is holiday.
+ * 1. Sunday is holiday.
+ * 2. Saturday is also holiday.
+ * 3. National holiday is holiday.
+ * 4. If yesterday is holiday and today is Monday, then today is holiday.
  */
 object Holiday {
   def isHoliday(year: Int, month: Int, day: Int): Boolean = {
@@ -27,20 +28,21 @@ object Holiday {
   }
 
   protected def isNationalHoliday(year: Int, month: Int, day: Int): Boolean = {
+    assert(year == 2012 || year == 2013)
     val calendar = new GregorianCalendar(year, month-1, day)
     val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
     val weekOfMonth = (day - 1) / 7 + 1
     (month == 1 && day == 1) || // New Year's Day
     (month == 1 && dayOfWeek == Calendar.MONDAY && weekOfMonth == 2) || // Coming-of-Age Day
     (month == 2 && day == 11) || // National Foundation Day
-    (year == 2013 && month == 3 && day == 20) || // Vernal Equinox Day
+    ((year == 2012 && month == 3 && day == 20) || (year == 2013 && month == 3 && day == 20)) || // Vernal Equinox Day
     (month == 4 && day == 29) || // Showa Day
     (month == 5 && day == 3) || // Constitution Day
     (month == 5 && day == 4) || // Greenery Day
     (month == 5 && day == 5) || // Children's Day
     (month == 7 && dayOfWeek == Calendar.MONDAY && weekOfMonth == 3) || // Marine Day
     (month == 9 && dayOfWeek == Calendar.MONDAY && weekOfMonth == 3) || // Respect-for-the-Aged Day
-    (year == 2013 && month == 9 && day == 23) || // Autumnal Equinox Day
+    ((year == 2012 && month == 9 && day == 22) || (year == 2013 && month == 9 && day == 23)) || // Autumnal Equinox Day
     (month == 10 && dayOfWeek == Calendar.MONDAY && weekOfMonth == 2) || // Health and Sports Day
     (month == 11 && day == 3) || // Culture Day
     (month == 11 && day == 23) || // Labor Thanksgiving Day
