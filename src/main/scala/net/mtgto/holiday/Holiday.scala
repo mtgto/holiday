@@ -54,4 +54,12 @@ object Holiday {
     calendar.setTime(date)
     isHoliday(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH))
   }
+
+  import scala.language.implicitConversions
+
+  class DateConverter(date: => JDate) {
+    def isHoliday: Boolean = Holiday.isHoliday(date)
+  }
+
+  implicit def convertDateToDateConverter(date: JDate): DateConverter = new DateConverter(date)
 }

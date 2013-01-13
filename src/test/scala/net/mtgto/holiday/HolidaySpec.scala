@@ -38,5 +38,11 @@ class HolidaySpec extends Specification {
       Holiday.isHoliday(2013, 5, 6) must beTrue
       Holiday.isHoliday(2013, 11, 4) must beTrue
     }
+
+    "add java.util.Date to detect whether is holiday or not" in {
+      import Holiday._
+      new java.util.Date(1358089200000L).isHoliday must beTrue // 2013/01/14
+      new java.util.Date(1358175600000L).isHoliday must beFalse // 2013/01/15
+    }
   }
 }
